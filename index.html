@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI 作品集 · Prompt Engineering × Vibe Coding</title>
+<meta name="description" content="郑同学的 AI 作品集：字节跳动 Policy Prompt Engineering 实习实战 + Vibe Coding 互动叙事小游戏《小迟去哪儿》" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">郑同学 · AI 作品集</a>
+    <div class="nav-links">
+      <a href="#prompt">Prompt 工程</a>
+      <a href="#game">Vibe Coding</a>
+      <a class="nav-gh" href="https://github.com/zhengjinglei09-source/xiaochi-station" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <p class="hero-kicker">2027 届校招 · 求职方向：AI 项目专员</p>
+  <h1>把 <span class="hl">大模型能力</span><br/>做成<span class="hl">可度量、可迭代</span>的业务成果</h1>
+  <p class="hero-sub">
+    字节跳动内容安全策略实习：独立负责 4 个 Policy 的 Prompt 工程，以 Precision / Recall 驱动迭代；<br/>
+    课余 Vibe Coding：零框架依赖的像素风互动叙事游戏，已上线并完成一轮首屏性能优化。
+  </p>
+  <div class="hero-cta">
+    <a class="btn primary" href="#prompt">查看 Prompt 实战</a>
+    <a class="btn ghost" href="https://moonlit-fenglisu-0a1622.netlify.app" target="_blank" rel="noopener">试玩小游戏 ↗</a>
+  </div>
+  <ul class="hero-tags">
+    <li>Prompt Engineering</li><li>Precision / Recall 迭代</li><li>Bad Case 分析</li>
+    <li>TypeScript / Canvas</li><li>Vibe Coding</li><li>性能优化</li>
+  </ul>
+</header>
+
+<!-- ============ SECTION 1: PROMPT ============ -->
+<section class="section" id="prompt">
+  <div class="wrap">
+    <p class="sec-kicker">实习实战 · 字节跳动</p>
+    <h2>Policy Prompt Engineering：让审核大模型「判得准」</h2>
+    <p class="sec-lead">
+      负责 <strong>IJS（互惠索礼）、DT3P（引流第三方平台）、MTE</strong> 等 4 个内容安全 Policy 的 Prompt 工程。
+      每周对模型判案结果做数据清洗，用 <strong>Precision / Recall</strong> 双指标度量效果，目标 <strong>P70 / R50</strong>，
+      形成"改 Prompt → 小样本验证 → 大样本回归 → Bad Case 归因"的完整迭代闭环。
+    </p>
+
+    <div class="metric-row">
+      <div class="metric"><b>4</b><span>个 Policy 独立负责</span></div>
+      <div class="metric"><b>P70 / R50</b><span>精确率 / 召回率目标</span></div>
+      <div class="metric"><b>10</b><span>FP 小样本先验证再放量</span></div>
+      <div class="metric"><b>6000→3000</b><span>Token 精简后 PR 反升</span></div>
+    </div>
+
+    <h3 class="block-title">① 我的迭代方法论</h3>
+    <ol class="flow">
+      <li>
+        <b>冷启：规则 + 正例双输入</b>
+        <p>先吃透 OPS 审核规则（正向条件 / 豁免条件），再把样本库里的正例全部拉出来观察违规形态——纯按规则写会漏内容，纯抄 case 会过拟合，两者结合准确率最高。</p>
+      </li>
+      <li>
+        <b>小样本快速验证</b>
+        <p>每改一版，先在当轮 10 个 FP 上单独验证：确认改动对目标 case 有效、方向没跑偏，再跑大样本，避免"改好 10 个、带崩 100 个"。</p>
+      </li>
+      <li>
+        <b>Bad Case 聚合归因</b>
+        <p>抽检 Bad Case 找共性（常有 15/20 是同一问题），一条规则改动一次性消掉一批；并让 AI 工具帮我概括每个 case 的思维链、输出整体结论，把时间花在判断而不是翻表上。</p>
+      </li>
+      <li>
+        <b>版本管理 + Diff 回滚</b>
+        <p>每版记录改动点。新版 PR 下滑时不推倒重来，而是拉出"V1 对、V2 变 FP"的 Diff Case，逐个对比两版 COT 定位原因（如答案模板过细诱发幻觉）。</p>
+      </li>
+    </ol>
+
+    <h3 class="block-title">② 我总结的 Prompt 写作五原则</h3>
+    <div class="cards">
+      <article class="card key">
+        <span class="card-no">01</span>
+        <h4>结构清晰最重要</h4>
+        <p>先定 Step1 / Step2 / Step3 的骨架再填内容，每个场景内部逻辑保持一致（都是"判定条件 + 条款"）。结构清晰后，改一个 Step 不会波及其它 Step，定位 FP 又快又准；还要避免条款间自相矛盾——模型会因此这次判 A、下次判 B。</p>
+      </article>
+      <article class="card">
+        <span class="card-no">02</span>
+        <h4>判定条件要前置、要精准</h4>
+        <p>能写进判定条件的就往上写，精准描述"要识别什么"；避免上面写得笼统、下面堆一堆排除条款。原则性的整层豁免（如才艺豁免）上提，细碎的非决定因素不要混在豁免里。</p>
+      </article>
+      <article class="card">
+        <span class="card-no">03</span>
+        <h4>答案模板与 Prompt 同构</h4>
+        <p>输出按 scenario 分段，方便 RCA 精准定位是哪一类判错。模板只在命中时要求说明理由——曾踩过坑：模板写太细，模型觉得"你都写了肯定有"，反而硬猜产生幻觉。</p>
+      </article>
+      <article class="card">
+        <span class="card-no">04</span>
+        <h4>Token 做减法</h4>
+        <p>Token 太长会让 P、R 双低且不稳定：注意力被稀释，模型抓不住重点。实测从 6000 压到 3000 左右指标反而提升，之后我把 Prompt 稳定控制在 3000–5000 token，能 5 个字讲清就不写一句话。</p>
+      </article>
+      <article class="card">
+        <span class="card-no">05</span>
+        <h4>Step 间解耦</h4>
+        <p>不同 Step 不重复定义同一概念。例如 Step1 已定义"索礼"，Step2 就不再耦合索礼描述，直接删掉重复段落——重复内容看似强调，实则制造歧义。</p>
+      </article>
+    </div>
+
+    <h3 class="block-title">③ 实战案例：IJS 互惠索礼的三步判定结构</h3>
+    <p class="case-lead">IJS = Reciprocal Gifting，核心是我抽象出的一句话：<strong>"你给我一个东西，我还你一个东西，且两者必须有 Link。"</strong></p>
+    <div class="steps3">
+      <div class="step3">
+        <h5>Step 1 · 索要礼物</h5>
+        <p>识别三类索礼信号：TikTok 礼物（圆形金色图标）、金币 coins、真钱（如 5 美元 / 800 日元）；信号来源覆盖文本、画面图标、ASR 语音三个通道。</p>
+      </div>
+      <div class="step3">
+        <h5>Step 2 · 回报</h5>
+        <p>枚举 5 种回报场景：互动指标（关注/点赞/灯牌）、游戏物品（皮肤/道具，须是具体名词）、数字内容（账号/电话）、抽奖资格、支持者阵营加分。</p>
+      </div>
+      <div class="step3">
+        <h5>Step 3 · Link 关联</h5>
+        <p>索礼与回报必须存在同一位置 / 明确时序 / 因果关系，没有关联不判违规。并沉淀特殊规则：游戏动作不算回报、Drop 武器算、游戏币≠真钱、cohost 不算 FP。</p>
+      </div>
+    </div>
+
+    <h3 class="block-title">实战案例：DT3P 引流第三方平台的两条判定路径</h3>
+    <div class="paths">
+      <div class="path">
+        <h5>路径一 · 常规引流</h5>
+        <p>第三方平台信息 + <em>可操作符</em>（用户 ID / 链接 / 二维码，仅有 "INS" 字样不算），且存在无互动久坐或第三方画面占屏 50%+ 的引流行为；<strong>有真实观众互动则豁免</strong>。</p>
+      </div>
+      <div class="path">
+        <h5>路径二 · 支付平台</h5>
+        <p>第三方平台 + 支付平台（如 PayPay + 账号、银行 + 账号）直接判违规，<strong>不被互动豁免</strong>——支付场景零容忍。</p>
+      </div>
+    </div>
+
+    <div class="takeaway">
+      <h3 class="block-title" style="margin-top:0">④ 心得：这段实习改变了我写 Prompt 的方式</h3>
+      <ul class="notes">
+        <li><strong>Prompt 是工程，不是许愿。</strong>每一版改动都要能回答"针对哪批 FP/FN、预期哪类 case 翻转"，用指标而不是感觉验收。</li>
+        <li><strong>先写结构，再写句子。</strong>骨架错了，措辞再精致也是错的；骨架对了，调优只是局部手术。</li>
+        <li><strong>样本和规则缺一不可。</strong>规则告诉我 policy 的"法理"，正例告诉我真实世界的"案情"，只看一边都会偏。</li>
+        <li><strong>克制比堆料难。</strong>Token 减半后效果更好、答案模板变薄后幻觉更少——大模型不需要面面俱到的叮嘱，需要清晰无歧义的边界。</li>
+        <li><strong>让 AI 参与分析 AI。</strong>用大模型批量概括 Bad Case 的 COT，把人力留给最终判断和策略设计，这也是我理解的"AI 提效"的正确姿势。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2: GAME ============ -->
+<section class="section alt" id="game">
+  <div class="wrap">
+    <p class="sec-kicker">个人项目 · Vibe Coding</p>
+    <h2>《小迟去哪儿》：毕业生人生选择互动叙事游戏</h2>
+    <p class="sec-lead">
+      一款像素风 Web 小游戏：在"人生车站"操纵主角余小迟，登上五辆列车体验五种毕业去向——
+      <strong>社畜号（就业）、学术号（考研）、编制号（考公）、留子号（留学）、待机号（Gap）</strong>。
+      对话分支、限时问答、申论卡片排序、留学材料拖拽上传等玩法均已实现，全程用 AI 协作编码（Vibe Coding）完成。
+    </p>
+
+    <div class="game-status">
+      <div class="status-main">
+        <h3>🎮 在线试玩（Demo 阶段）</h3>
+        <p>手机竖屏体验最佳；桌面端在画面<strong>左侧 40% 区域按住拖动</strong>出现虚拟摇杆。</p>
+        <a class="btn primary" href="https://moonlit-fenglisu-0a1622.netlify.app" target="_blank" rel="noopener">打开在线 Demo ↗</a>
+        <a class="btn ghost" href="https://github.com/zhengjinglei09-source/xiaochi-station" target="_blank" rel="noopener">查看源码</a>
+      </div>
+      <div class="status-note">
+        <h4>关于已知的「首屏黑屏」问题</h4>
+        <p>线上 Demo 首次打开可能黑屏约 1 分钟。排查发现：4 张 NPC 精灵图是 1536×1024（共 <b>5.8MB</b>），游戏必须全部加载完才首帧渲染，而画面中人物显示高度仅约 80 像素。</p>
+        <p>已完成修复并本地实测：nearest-neighbor 像素风缩至 768×512（<b>340KB，体积 −94%</b>）+ 增加加载提示，首屏 <b>60 秒 → 1–2 秒</b>，人物零变形。修复已提交，推送后 Netlify 自动重新部署。</p>
+      </div>
+    </div>
+
+    <h3 class="block-title">游戏切片</h3>
+    <div class="videos">
+      <figure class="video-card">
+        <video controls preload="metadata" playsinline poster="assets/clip1-poster.jpg">
+          <source src="assets/clip1-explore.mp4" type="video/mp4" />
+        </video>
+        <figcaption><b>切片 1 · 车站自由探索</b><span>动态虚拟摇杆、像素站台、站牌与引导提示</span></figcaption>
+      </figure>
+      <figure class="video-card">
+        <video controls preload="metadata" playsinline poster="assets/clip2-poster.jpg">
+          <source src="assets/clip2-dialogue.mp4" type="video/mp4" />
+        </video>
+        <figcaption><b>切片 2 · 与列车员对话</b><span>分支对话系统，"上车 / 再看看"决定走向</span></figcaption>
+      </figure>
+      <figure class="video-card">
+        <video controls preload="metadata" playsinline poster="assets/clip3-poster.jpg">
+          <source src="assets/clip3-board-life.mp4" type="video/mp4" />
+        </video>
+        <figcaption><b>切片 3 · 登上社畜号</b><span>登车演出后进入第一章生活地图（就业线）</span></figcaption>
+      </figure>
+    </div>
+
+    <h3 class="block-title">技术栈与工程亮点</h3>
+    <div class="cards">
+      <article class="card">
+        <span class="card-no">栈</span>
+        <h4>Vite + TypeScript + Canvas 2D</h4>
+        <p>零运行时框架依赖。静态场景预绘制，逐帧只更新镜头、角色与少量环境动画；逻辑分辨率 360 宽等比适配，桌面居中竖屏，适配刘海屏安全区。</p>
+      </article>
+      <article class="card">
+        <span class="card-no">构</span>
+        <h4>数据驱动的多路线叙事</h4>
+        <p>五条人生路线复用同一套事件执行器、地图与互动组件，新增剧情只需编写内容数据文件，不新增页面。</p>
+      </article>
+      <article class="card">
+        <span class="card-no">件</span>
+        <h4>自研交互组件库</h4>
+        <p>多点触控虚拟摇杆（指针归属 / 中断归零）、邻近范围交互、分支对话、限时问答、卡片排序、材料拖拽上传。</p>
+      </article>
+      <article class="card">
+        <span class="card-no">测</span>
+        <h4>Playwright 回归 + CI 部署</h4>
+        <p>跨浏览器用例覆盖移动、碰撞、五路线完整流程与小屏对话；Netlify 推送 main 自动构建发布，仓库保留每个阶段的验收记录。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>郑同学 · 2027 届 AI 项目专员求职作品集</p>
+  <p class="footer-links">
+    <a href="https://github.com/zhengjinglei09-source/xiaochi-station" target="_blank" rel="noopener">GitHub：xiaochi-station ↗</a>
+    <a href="https://moonlit-fenglisu-0a1622.netlify.app" target="_blank" rel="noopener">在线 Demo ↗</a>
+  </p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
